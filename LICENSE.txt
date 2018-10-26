@@ -71,3 +71,10 @@ git clone git@github.com:lansword/Testfirst.git //git clone克隆一个本地库
 	1.在合并出现问题之后，master分支的装填是merging,代表正在合并过程中
 	2.此时，两个文件已经是一个完整体了，虽然还是有冲突内容，修改完冲突内容之后，提交，此时两个文件已经合并成功了
 }
+
+
+ git merge --no-ff -m "merge with no-ff" dev //准备合并dev分支，请注意--no-ff参数，表示禁用Fast forward
+
+
+
+ 
