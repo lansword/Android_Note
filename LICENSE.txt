@@ -62,3 +62,12 @@ git clone git@github.com:lansword/Testfirst.git //git clone克隆一个本地库
 合并某分支到当前分支：git merge <name>
 
 删除分支：git branch -d <name>
+
+
+
+使用git merge 合并分支时遇到冲突需要先解决冲突然后add、commit之后就合并成功了
+{
+注意：
+	1.在合并出现问题之后，master分支的装填是merging,代表正在合并过程中
+	2.此时，两个文件已经是一个完整体了，虽然还是有冲突内容，修改完冲突内容之后，提交，此时两个文件已经合并成功了
+}
