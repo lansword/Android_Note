@@ -71,3 +71,13 @@ git clone git@github.com:lansword/Testfirst.git //git clone克隆一个本地库
 	1.在合并出现问题之后，master分支的装填是merging,代表正在合并过程中
 	2.此时，两个文件已经是一个完整体了，虽然还是有冲突内容，修改完冲突内容之后，提交，此时两个文件已经合并成功了
 }
+
+
+git stash //可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作
+
+git stash list//查看stash列表
+
+git stash apply//恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+
+git stash pop//恢复,恢复的同时把stash内容也删了
+
