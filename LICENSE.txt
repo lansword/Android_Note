@@ -38,3 +38,4 @@ git checkout -- readme.txt
 git reset HEAD readme.txt //如果已经add到了暂存区但未提交，可以用此命令把暂存区的修改撤销掉（unstage），重新放回工作区（撤回add）
 
 
+git rm test.txt  //删除版本库已经存在（已提交）的文件，并且git commit即可
