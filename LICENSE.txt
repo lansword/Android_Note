@@ -1,0 +1,25 @@
+git init 
+
+git add
+
+git commit -m "xxxx"
+
+git log  //可以查看提交历史，以便确定要回退到哪个版本
+
+git log --pretty=oneline //单行显示log
+
+git reflog  //查看命令历史，以便确定要回到未来的哪个版本
+
+git reset --hard commit_id //回退到某个版本
+
+git reset --hard HEAD^ //回退到上一个版本
+git reset --hard HEAD~1 ////回退到上一个版本
+
+git status //查看状态
+
+git diff //查看修改了什么内容
+
+
+
+
+
