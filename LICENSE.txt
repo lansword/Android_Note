@@ -99,10 +99,6 @@ git branch -D feature-vulcan//已经提交的分支需要使用“-D”强制删
 hahaha
 
 
-
-
-
-
-
+git checkout -b dev origin/dev  //本地克隆下来代码之后，可以用该命令切换到其他分支（dev）
 
 
