@@ -108,9 +108,11 @@ git branch --set-upstream-to=origin/dev dev   //git pull失败，原因是没有
 
 git tag <tagname>用于新建一个标签，默认为HEAD，也可以指定一个commit id；
 
-git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+git tag -a <tagname> -m "blablabla..."//创建带有说明的标签，用-a指定标签名，-m指定说明文字
 
 git tag可以查看所有标签。
+
+git show <tagname>查看标签详细信息
 
 注意：标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签
 
