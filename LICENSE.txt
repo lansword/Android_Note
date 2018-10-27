@@ -97,7 +97,7 @@ git stash pop//恢复,恢复的同时把stash内容也删了
 git branch -D feature-vulcan//已经提交的分支需要使用“-D”强制删除分支
 
 
-
+git checkout -b dev origin/dev  //本地克隆下来代码之后，可以用该命令切换到其他分支（dev）
 
 
 
