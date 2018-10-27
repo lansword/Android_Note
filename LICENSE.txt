@@ -101,4 +101,6 @@ hahaha
 
 git checkout -b dev origin/dev  //本地克隆下来代码之后，可以用该命令切换到其他分支（dev）
 
+git branch --set-upstream-to=origin/dev dev   //git pull失败，原因是没有指定本地dev分支与远程origin/dev分支的链接，根据提示，设置dev和origin/dev的链接
+
 
