@@ -35,12 +35,15 @@ $ git config --global alias.last 'log -1'
 这样，用git last就能显示最近一次的提交：
 
 $ git last
-commit adca45d317e6d8a4b23f9811c3d7b7f0f180bfe2
-Merge: bd6ae48 291bea8
-Author: Michael Liao <askxuefeng@gmail.com>
-Date:   Thu Aug 22 22:49:22 2013 +0800
 
-    merge & fix hello.py
+    commit adca45d317e6d8a4b23f9811c3d7b7f0f180bfe2
+    Merge: bd6ae48 291bea8
+    Author: Michael Liao <askxuefeng@gmail.com>
+    Date:   Thu Aug 22 22:49:22 2013 +0800
+            merge & fix hello.py
+    
+    
+    
 甚至还有人丧心病狂地把lg配置成了：
 
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
