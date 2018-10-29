@@ -124,3 +124,6 @@ git show <tagname>查看标签详细信息
 命令git tag -d <tagname>可以删除一个本地标签；
 
 命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
+
+
+git config --global color.ui true //Git显示颜色，会让命令输出看起来更醒目
