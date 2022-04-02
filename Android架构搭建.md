@@ -1,26 +1,34 @@
-# 手把手带你搭建一个优秀的Android项目架构
+本文章已授权微信公众号 guolin_blog （郭霖）独家发布。 发布地址：[手把手带你搭建一个优秀的Android项目架构](https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&mid=2650258650&idx=1&sn=ae258f977da27c31c2c0c6a2806438e0&chksm=88634db5bf14c4a3206700ed340c9de58383b4cabd4de060db8a78789e8b3ef0d6031dbb7a99&mpshare=1&scene=1&srcid=0910xjtv2MhEynl3yi9UGJOA&sharer_sharetime=1631236910632&sharer_shareid=8245fe44cd1f6c522efa500f73bf5205&exportkey=AygMNQx3lYnQnyeid0swMNE%3D&pass_ticket=VlfDQiVyltIkpHDrGW04ftXL2hyRdDn5gpggzvZoolXa0PUKHTY6JBJnAx%2BNWKNe&wx_header=0#rd)
 
-本文章已授权微信公众号 guolin_blog （郭霖）独家发布。 发布地址：[手把手带你搭建一个优秀的Android项目架构](https://link.juejin.cn?target=https%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzA5MzI3NjE2MA%3D%3D%26mid%3D2650258650%26idx%3D1%26sn%3Dae258f977da27c31c2c0c6a2806438e0%26chksm%3D88634db5bf14c4a3206700ed340c9de58383b4cabd4de060db8a78789e8b3ef0d6031dbb7a99%26mpshare%3D1%26scene%3D1%26srcid%3D0910xjtv2MhEynl3yi9UGJOA%26sharer_sharetime%3D1631236910632%26sharer_shareid%3D8245fe44cd1f6c522efa500f73bf5205%26exportkey%3DAygMNQx3lYnQnyeid0swMNE%3D%26pass_ticket%3DVlfDQiVyltIkpHDrGW04ftXL2hyRdDn5gpggzvZoolXa0PUKHTY6JBJnAx%2BNWKNe%26wx_header%3D0%23rd)
+[![封面](https://camo.githubusercontent.com/ffc1192c400521b5dd184584bc4cb43613592ca2bc14f677570619062cdd7cd1/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d356231356135306434626439623035342e6a7065673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/ffc1192c400521b5dd184584bc4cb43613592ca2bc14f677570619062cdd7cd1/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d356231356135306434626439623035342e6a7065673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 ### 目录
 
-- [前言](#前言)
-- [架构总体介绍](#架构总体介绍)
-- [Gradle配置统一管理](#gradle配置统一管理)
-- [基类封装](#基类封装)
-- [视图绑定](#视图绑定)
-- [底部导航栏的实现](#底部导航栏的实现)
-- [事件总线框架封装](#事件总线框架封装)
-- [列表架构封装](#列表架构封装)
-- [网络架构搭建](#网络架构搭建)
-- [持久化](#持久化)
-- [期望和总结](#期望和总结)
+- [前言](https://github.com/huannan/XArch#前言)
+- [架构总体介绍](https://github.com/huannan/XArch#架构总体介绍)
+- [Gradle配置统一管理](https://github.com/huannan/XArch#gradle配置统一管理)
+- [基类封装](https://github.com/huannan/XArch#基类封装)
+- [视图绑定](https://github.com/huannan/XArch#视图绑定)
+- [底部导航栏的实现](https://github.com/huannan/XArch#底部导航栏的实现)
+- [事件总线框架封装](https://github.com/huannan/XArch#事件总线框架封装)
+- [列表架构封装](https://github.com/huannan/XArch#列表架构封装)
+- [网络架构搭建](https://github.com/huannan/XArch#网络架构搭建)
+- [持久化](https://github.com/huannan/XArch#持久化)
+- [期望和总结](https://github.com/huannan/XArch#期望和总结)
 
 ### 前言
 
 最近公司准备上线新项目，由笔者来负责搭建项目架构，正好也把之前学的Kotlin等相关知识巩固一下，于是把搭建的成果抽取出来作为开源项目分享给大家。另外，该项目也是大家学习Kotlin一个很好的示例，另外该项目稍作修改完全可以作为一个新项目的蓝本。
 
+下面放上几张项目效果图：
 
+[![首页](https://camo.githubusercontent.com/f5b3a46c44d5fc84192201d32c72efa6c52586f84fd13797d44ff832535a28e3/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d653138636234616335303562366132362e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/f5b3a46c44d5fc84192201d32c72efa6c52586f84fd13797d44ff832535a28e3/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d653138636234616335303562366132362e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
+
+[![二次元](https://camo.githubusercontent.com/96c3bd47fb67a02b1bdd0996fe2c5c450d92425c8bd07afb0b41455dc54cd2eb/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d643833343561396138303430663733632e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/96c3bd47fb67a02b1bdd0996fe2c5c450d92425c8bd07afb0b41455dc54cd2eb/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d643833343561396138303430663733632e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
+
+[![发现](https://camo.githubusercontent.com/7a9685b8d430abc4bdb9296e5f1d862900549e4530d646dc6ff3c0f4599aabc1/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d616261366337373730623163323732632e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/7a9685b8d430abc4bdb9296e5f1d862900549e4530d646dc6ff3c0f4599aabc1/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d616261366337373730623163323732632e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
+
+[![我的](https://camo.githubusercontent.com/c7db24b7560dcf4d60c0084355782f0e518d8e06766388144259dff0e5efa625/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d653135363232653134366561656635352e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/c7db24b7560dcf4d60c0084355782f0e518d8e06766388144259dff0e5efa625/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d653135363232653134366561656635352e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 ### 架构总体介绍
 
@@ -52,7 +60,7 @@
 
 下面先来看一下项目总体的包划分：
 
-![de31e9c9276f48548bacf218fbf5eee3_tplv-k3u1fbpfcp-zoom-in-crop-mark_1304_0_0_0](/Users/sword/Downloads/de31e9c9276f48548bacf218fbf5eee3_tplv-k3u1fbpfcp-zoom-in-crop-mark_1304_0_0_0.webp)
+[![项目总体架构](https://camo.githubusercontent.com/3689937eac63146d886b97e35e7384503e7f1ebc49e4c2c8fc4a696706e3b22c/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d383832386165363431336163633861352e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/3689937eac63146d886b97e35e7384503e7f1ebc49e4c2c8fc4a696706e3b22c/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d383832386165363431336163633861352e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 base：存放所有业务的基础类，包括BaseActivity、BaseFragment、BaseViewModel、列表等功能的封装 bean：存放所有Bean类，一般多为Kotlin的data class constant：存放所有常量 eventbus：项目封装XEventBus，基于LiveData item：存放所有可重用的列表Item module：存放以业务功能划分（一般是以页面为划分界限）的所有模块，每一个模块的package包含模块所需要的类，一般为Activity/Fragment以及与之对应的ViewModel network：基于Retrofit+OkHttp+协程的网络架构封装 persistence：存放数据库以及键值对等持久化相关的类 util：工具类，包含Kotlin扩展属性、扩展函数 widget：存放所有自定义控件 XArchApplication：项目的Application
 
@@ -64,7 +72,7 @@ base：存放所有业务的基础类，包括BaseActivity、BaseFragment、Base
 
 对于Gradle配置统一管理这一块，笔者写了一个config.gradle脚本：
 
-```groovy
+```
 /**
  * 依赖库版本管理
  */
@@ -118,7 +126,6 @@ def readLocalProperty(String key) {
 }
 
 ext.readLocalProperty = this.&readLocalProperty
-复制代码
 ```
 
 其中，
@@ -131,24 +138,22 @@ ext.readLocalProperty = this.&readLocalProperty
 
 这里再解释一下什么是本机配置，本机的配置在local.properties，而该文件不会提交到Git，所以在local.properties配置的属性，只用于改变你本地的构建。比如我要在本地调试的时候使用一个线程排查的工具，但是又不想影响持续集成编译出来的APK包，那么我们可以在local.properties里面增加以下一行：
 
-```properties
+```
 THREAD_POOL_SHRINK=false
-复制代码
 ```
 
 然后你可以在build.gradle里面增加以下配置，这样就可以达到只有你自己本机才能开启这个插件，而不会影响持续集成编译出来的APK包。这个是笔者比较常用的一个小技巧。
 
-```groovy
+```
 // 线程池优化Gradle插件，测试稳定后再上线，目前仅用于线程池排查
 if (readLocalProperty("THREAD_POOL_SHRINK")) {
     apply from: "thread.gradle"
 }
-复制代码
 ```
 
 介绍完全局配置脚本config.gradle，接下来在项目的根项目里面apply一下，就可以全局使用config.gradle所定义的信息了：
 
-```groovy
+```
 buildscript {
     apply from: 'config.gradle'
     addRepos(repositories)
@@ -162,7 +167,6 @@ allprojects {
     addRepos(repositories)
 }
 ...
-复制代码
 ```
 
 至此，Gradle配置统一管理这一块就实现好了，为后面多module打下坚实的基础。
@@ -173,7 +177,7 @@ allprojects {
 
 下面正式开始写代码，先从最简单的基类的封装入手，直接上代码：
 
-```kotlin
+```
 abstract class BaseActivity : SwipeBackActivity(), IGetPageName {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -198,7 +202,6 @@ abstract class BaseActivity : SwipeBackActivity(), IGetPageName {
 
     ...
 }
-复制代码
 ```
 
 1. 从整体来看，基类的设计必须是一个abstract class，并且提供必要的钩子函数给子类定制以及提供公共的常用的函数
@@ -211,11 +214,11 @@ abstract class BaseActivity : SwipeBackActivity(), IGetPageName {
 
 在具体使用方面，笔者建议是将所有模块都划分一个package，例如main package里面一个MainActivity和MainViewModel：
 
-![包划分](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bc63811c1311428a91648e514a958b8c~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?)
+[![包划分](https://camo.githubusercontent.com/d154aa32c5e6f13c1384d942f8b0719b26e69afca1810ffb2b7ad18c67f9a902/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d396533316338336663353239393264622e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/d154aa32c5e6f13c1384d942f8b0719b26e69afca1810ffb2b7ad18c67f9a902/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d396533316338336663353239393264622e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 具体可以参考谷歌提供的官方架构图：
 
-![推荐架构](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b31e3da2d4834f809533c2fd932944dd~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?)
+[![推荐架构](https://camo.githubusercontent.com/fbdd1add2813bf3b02a2f4e41d81fb793e27c90eada7eb0834f42c4e74e164ea/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d353465643534303734373064346339312e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/fbdd1add2813bf3b02a2f4e41d81fb793e27c90eada7eb0834f42c4e74e164ea/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d353465643534303734373064346339312e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 本项目省略了Repository层，考虑是中小型示例项目以及大家的学习成本，暂时没有做一层，有需要的话大家可以自己实现。
 
@@ -225,14 +228,14 @@ abstract class BaseActivity : SwipeBackActivity(), IGetPageName {
 
 - findViewById：重复繁琐，无法规避空指针和强转时类型错误问题(目前通过有泛型可以规避)
 - DataBinding：这个是实现MVVM双向绑定的工具，严格来说定位上不属于视图绑定工具，视图绑定只是DataBinding的部分功能
-- ButterKnife/Kotlin-Android-Extention：视图绑定工具，目前由于从AGP-5.0版本开始，R类生成的值不再是常量，这两个工具已废弃（参考： [blog.csdn.net/c10WTiybQ1Y…](https://link.juejin.cn?target=https%3A%2F%2Fblog.csdn.net%2Fc10WTiybQ1Ye3%2Farticle%2Fdetails%2F113695548%EF%BC%89)
+- ButterKnife/Kotlin-Android-Extention：视图绑定工具，目前由于从AGP-5.0版本开始，R类生成的值不再是常量，这两个工具已废弃（参考： https://blog.csdn.net/c10WTiybQ1Ye3/article/details/113695548）
 - ViewBinding：视图绑定工具，不用手写findViewById，而且避免了findViewById可能会带来的空指针和强转时类型错误问题(*)
 
 基于以上考虑，项目决定采用ViewBinding。
 
 以下是在BaseActivity和BaseFragment中对ViewBinding的封装：
 
-```kotlin
+```
 /**
  * Activity基类
  */
@@ -259,12 +262,11 @@ abstract class BaseFragment<T : ViewBinding>(val inflater: (inflater: LayoutInfl
         return viewBinding.root
     }
 }
-复制代码
 ```
 
 我们定义了一个泛型参数，并定义一个子类可以访问的成员，然后在主构造函数里面添加了ViewBinding初始化的高阶函数，并且在对应的onCreate/onCreateView里面调用这个高阶函数初始化ViewBinding，在继承Base类的时候，只需要简单传入XXXViewBinding::inflate即可，以MainActivity为例子：
 
-```kotlin
+```
 /**
  * 首页
  */
@@ -276,20 +278,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         viewBinding.xxx
     }
 }
-复制代码
 ```
 
 ### 底部导航栏的实现
 
 底部导航栏基本上是一个项目的标配了，目前的实现方案有很多，笔者挑选了比较成熟文档且可扩展性强的改造FragmentTabHost方案。
 
-相关文章可以参考：[Android 底部导航栏(底部Tab)最佳实践](https://link.juejin.cn?target=https%3A%2F%2Fwww.jianshu.com%2Fp%2F0b9d5777abba)
+相关文章可以参考：[Android 底部导航栏(底部Tab)最佳实践](https://www.jianshu.com/p/0b9d5777abba)
 
 底部导航栏的实现笔者采用FragmentTabHost+Fragment来实现，只不过FragmentTabHost是经过简单修改，防止Fragment在切换过程中Fragment销毁。
 
 示例代码参考MainActivity.kt：
 
-```kotlin
+```
 /**
  * 初始化底栏
  */
@@ -330,7 +331,6 @@ private fun initTabs() {
 private fun setCurrentTab(@TabId tabID: String) {
     viewBinding.fragmentTabHost.setCurrentTabByTag(tabID)
 }
-复制代码
 ```
 
 在initTabs函数中，我们通过调用FragmentTabHost的setup方法设置FragmentManager，以及指定用于装载Fragment的布局容器。然后通过addTab方法把创建好的TabSpec传进去即可。其中TabIndicatorView是我们自定义的每一个底部导航栏显示的控件。
@@ -347,29 +347,27 @@ private fun setCurrentTab(@TabId tabID: String) {
 
 在任何地方通过XEventBus的post方法发送一个事件：
 
-```kotlin
+```
 XEventBus.post(EventName.REFRESH_HOME_LIST, "领现金页面通知首页刷新数据")
-复制代码
 ```
 
 订阅方接收：
 
-```kotlin
+```
 XEventBus.observe(viewLifecycleOwner, EventName.REFRESH_HOME_LIST) { message: String ->
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
-复制代码
 ```
 
 总体类预览如下：
 
-![事件总线架构](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7dba980ac6804e86a98ef9fd06be1ea4~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?)
+[![事件总线架构](https://camo.githubusercontent.com/acd1876f3cec67324eaf2bd7a1a2f6a004a9a13a4aa0a2d84956f49d0859fcd4/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d613230316465383630396333623731632e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/acd1876f3cec67324eaf2bd7a1a2f6a004a9a13a4aa0a2d84956f49d0859fcd4/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d613230316465383630396333623731632e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 一共几个类搞定，下面开始讲解实现原理。
 
 熟悉LiveData的朋友都知道，LiveData在添加新的Observer的时候是会收到最后一条消息，实质上是一种粘性订阅，如果不需要粘性订阅，那么就需要对Observer进行改造了：
 
-```kotlin
+```
 class EventObserverWrapper<T>(
     liveData: EventLiveData<T>,
     sticky: Boolean,
@@ -397,7 +395,6 @@ class EventObserverWrapper<T>(
         observerDelegate.onChanged(t)
     }
 }
-复制代码
 ```
 
 我们通过代理Observer，在构造的时候传入LiveData和sticky粘性订阅参数，在init中判断如果调用方不需要粘性订阅，那么根据LiveData的版本号mVersion来跳过下一次onChanged的触发。
@@ -406,7 +403,7 @@ class EventObserverWrapper<T>(
 
 接下来我们封装一个EventLiveData，添加在订阅的时候，增加了一个sticky参数，把传进来的Observer用EventObserverWrapper包装一下：
 
-```kotlin
+```
 class EventLiveData<T> : MutableLiveData<T>() {
 
     fun observe(owner: LifecycleOwner, sticky: Boolean, observer: Observer<in T>) {
@@ -417,12 +414,11 @@ class EventLiveData<T> : MutableLiveData<T>() {
         return EventObserverWrapper(this, sticky, observer)
     }
 }
-复制代码
 ```
 
 最后再对外提供一个门面类：
 
-```kotlin
+```
 object XEventBus {
 
     private val channels = HashMap<String, EventLiveData<*>>()
@@ -445,7 +441,6 @@ object XEventBus {
         with<T>(eventName).observe(owner, sticky, observer)
     }
 }
-复制代码
 ```
 
 在这个XEventBus对象里面，channels存储了所有EventLiveData，通过with函数就可以根据eventName获取一个EventLiveData，这里需要注意多线程访问HashMap的问题。
@@ -461,7 +456,7 @@ object XEventBus {
 
 把LiveData包里面的几个类拷贝到自己的项目下面，修改触发事件回调的considerNotify方法，去掉判断Observer是否活跃的逻辑就可以了：
 
-```java
+```
 private void considerNotify(ObserverWrapper observer) {
     /* 修改源码，实现后台收消息功能
     if (!observer.mActive) {
@@ -484,7 +479,6 @@ private void considerNotify(ObserverWrapper observer) {
     observer.mLastVersion = mVersion;
     observer.mObserver.onChanged((T) mData);
 }
-复制代码
 ```
 
 对于没有LifecycleOwner的场景，需要自己实现LifecycleOwner即可，大部分情况下通过Activity/Fragment都是可以直接获取LifecycleOwner的。
@@ -513,7 +507,7 @@ private void considerNotify(ObserverWrapper observer) {
 
 XRecyclerView的配置示例代码在HomeFragment.kt，如下：
 
-```kotlin
+```
 viewBinding.rvList.init(
     XRecyclerView.Config()
         .setViewModel(viewModel)
@@ -530,14 +524,13 @@ viewBinding.rvList.init(
             }
         })
 )
-复制代码
 ```
 
 通过调用XRecyclerView的init方法，传入一个包含着所有配置信息的XRecyclerView.Config对象即可。其中大部分配置如果无需配置的话可以不进行配置直接使用推荐的默认值。
 
 在示例代码当中，我们设置了Item的点击监听和Item上面子View的点击监听，另外我们还传入了一个BaseRecyclerViewModel对象，主要负责为XRecyclerView提供数据来源，实现可参考HomeViewModel.kt，如下：
 
-```kotlin
+```
 class HomeViewModel : BaseRecyclerViewModel() {
 
     override fun loadData(isLoadMore: Boolean, isReLoad: Boolean, page: Int) {
@@ -571,7 +564,6 @@ class HomeViewModel : BaseRecyclerViewModel() {
     @PageName
     override fun getPageName() = PageName.HOME
 }
-复制代码
 ```
 
 在示例代码中，我们主要做了以下几件事：
@@ -583,11 +575,11 @@ class HomeViewModel : BaseRecyclerViewModel() {
 
 下面开始简要说明列表架构的实现原理。整体架构如下图所示：
 
-![列表架构](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/636cdfca53684d7a80c864840d99d934~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?)
+[![列表架构](https://camo.githubusercontent.com/5ac5463268510648f1d5dee53b4bfb87f629b256bf5844e076d157e9c85301c0/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d376537623232633864346538666233362e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/5ac5463268510648f1d5dee53b4bfb87f629b256bf5844e076d157e9c85301c0/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d376537623232633864346538666233362e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 要考虑Item和Adapter的复用，我们通过源码的方式引入MultiType，封装了一个BaseAdapter，并且在里面提供一些最通用的函数：
 
-```kotlin
+```
 open class BaseAdapter : MultiTypeAdapter() {
 
     init {
@@ -603,12 +595,11 @@ open class BaseAdapter : MultiTypeAdapter() {
 
     ...
 }
-复制代码
 ```
 
 另外，根据MultiType的用法，我们封装一个BaseItemViewDelegate：
 
-```kotlin
+```
 abstract class BaseItemViewDelegate<T : BaseViewData<*>, VH : RecyclerView.ViewHolder> : ItemViewDelegate<T, VH>() {
 
     @CallSuper
@@ -676,25 +667,23 @@ abstract class BaseItemViewDelegate<T : BaseViewData<*>, VH : RecyclerView.ViewH
     }
 
 }
-复制代码
 ```
 
 在BaseItemViewDelegate里面，我们处理了RecyclerView的所有点击监听，包括短按、长按、Item子View的点击监听，通过不断回溯父View的方式，最终将点击事件委托给我们将要封装的XRecyclerView来处理，最终交由使用方（Activity/Fragment等）来回调。
 
 MultiType的核心思想是一种class对应一种Item，为了进一步隔离并且使得相同的class可以对应多种Item，我们抽象了一个BaseViewData包装类：
 
-```kotlin
+```
 open class BaseViewData<T>(var value: T) {
     ...
 }
-复制代码
 ```
 
 那么通过继承实现不同的BaseViewData就可以不同的Item，同时，我们也需要把MultiType的源码作相应修改。
 
 既然实现不同的BaseViewData就可以不同的Item，那么我们很自然地就想到我们的上拉加载怎么实现了，实现一个LoadMoreViewData和LoadMoreViewDelegate，当成是普通的Item来处理就好了。
 
-```kotlin
+```
 class LoadMoreViewData(@LoadMoreState loadMoreState: Int) : BaseViewData<Int>(loadMoreState) {
 }
 
@@ -706,14 +695,13 @@ class LoadMoreViewDelegate : BaseItemViewDelegate<LoadMoreViewData, LoadMoreView
 
     }
 }
-复制代码
 ```
 
 接下来继续实现加载更多的功能，我们现在需要继承BaseAdapter封装一个LoadMoreAdapter，核心思路是将LoadMoreViewData始终作为列表的最后一项来处理，并且对外提供setLoadMoreState函数来设置加载更多的状态。
 
 简要示例代码如下：
 
-```kotlin
+```
 class LoadMoreAdapter : BaseAdapter() {
 
     private val loadMoreViewData = LoadMoreViewData(LoadMoreState.LOADING)
@@ -737,12 +725,11 @@ class LoadMoreAdapter : BaseAdapter() {
 
     ...
 }
-复制代码
 ```
 
 接下来实现预加载这一块，核心思路是先封装一个LoadMoreRecyclerView，原理是通过addOnScrollListener来判断RecyclerView的滚动状态和数量，触发预加载的onLoadMore回调：
 
-```kotlin
+```
 class LoadMoreRecyclerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : RecyclerView(context, attrs) {
@@ -776,12 +763,11 @@ class LoadMoreRecyclerView @JvmOverloads constructor(
 
     ...
 }
-复制代码
 ```
 
 加载更多完成后，我们开始考虑下拉刷新怎么实现了。这一块就不详细说明了，主要是利用PtrFrameLayout来进行封装一个PullRefreshLayout：
 
-```kotlin
+```
 class PullRefreshLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : PtrFrameLayout(context, attrs, defStyleAttr), PtrUIHandler {
@@ -789,12 +775,11 @@ class PullRefreshLayout @JvmOverloads constructor(
     ...
 
 }
-复制代码
 ```
 
 我们还有一个问题，就是数据的来源，我们需要一个通用的BaseRecyclerViewModel基类：
 
-```kotlin
+```
 abstract class BaseRecyclerViewModel : BaseViewModel() {
 
     /**
@@ -861,7 +846,6 @@ abstract class BaseRecyclerViewModel : BaseViewModel() {
 
     ...
 }
-复制代码
 ```
 
 BaseRecyclerViewModel的核心功能是提供loadDataInternal函数给将要封装的XRecyclerView来调用，触发数据加载逻辑，然后BaseRecyclerViewModel的子类可以重写loadData函数来实现具体的数据加载逻辑。由于子类一般会在loadData里面开启线程来加载数据，所以这里的页码等信息我们需要使用原子类来包装处理。
@@ -870,7 +854,7 @@ BaseRecyclerViewModel的核心功能是提供loadDataInternal函数给将要封�
 
 最后，我们实现一个门面控件XRecyclerView，将所有功能包装起来：
 
-```kotlin
+```
 class XRecyclerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
@@ -894,7 +878,6 @@ class XRecyclerView @JvmOverloads constructor(
 
     ...
 }
-复制代码
 ```
 
 XRecyclerView是一个自定义的组合控件，通过Config来对外提供配置入口，封装了诸如空白异常页、Loading等控件。另外我们还监听了网络状态实现了自动重试，这些就不仔细展开了。
@@ -903,31 +886,29 @@ XRecyclerView是一个自定义的组合控件，通过Config来对外提供配�
 
 网络架构这一块，采用Retrofit+OkHttp+协程来进行封装。先来看一下总体预览：
 
-![网络架构](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2994654ce2044184b95c59c743397885~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?)
+[![网络架构](https://camo.githubusercontent.com/cb60c8309399d28b0786eafeca3751b87f247d5e86113661c84f280223bb7bdd/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d653231313130353132333735333039662e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/cb60c8309399d28b0786eafeca3751b87f247d5e86113661c84f280223bb7bdd/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d653231313130353132333735333039662e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 我们还是先看一下封装成果。
 
 在网络请求之前，我们先在定义网络接口：
 
-```kotlin
+```
 interface INetworkService {
 
     @GET("videodetail")
     suspend fun requestVideoDetail(@Query("id") id: String): BaseResponse<VideoBean>
 }
-复制代码
 ```
 
 然后一个网络interface对应创建一个简单的BaseNetworkApi类型的对象，比如NetworkApi：
 
-```kotlin
+```
 object NetworkApi : BaseNetworkApi<INetworkService>("http://172.16.47.112:8080/XArchServer/") {
 
     suspend fun requestVideoDetail(id: String) = getResult {
         service.requestVideoDetail(id)
     }
 }
-复制代码
 ```
 
 在继承并创建BaseNetworkApi对象的时候，我们需要传入baseUrl给BaseNetworkApi的构造行数，泛型参数传入我们刚刚定义好的网络interface。最后对外提供网络API的挂起函数，里面调用service.xxx()函数进行具体的网络请求，而service就是网络interface的具体实现。
@@ -936,7 +917,7 @@ object NetworkApi : BaseNetworkApi<INetworkService>("http://172.16.47.112:8080/X
 
 最后，我们在ViewModel里面开启一个协程，仅仅通过调用NetworkApi的requestXXX方法就可以拿到网络请求结果了：
 
-```kotlin
+```
 class SmallVideoViewModel : BaseViewModel() {
 
     val helloWorldLiveData = MutableLiveData<Result<VideoBean>>()
@@ -948,18 +929,17 @@ class SmallVideoViewModel : BaseViewModel() {
         }
     }
 }
-复制代码
 ```
 
-到这里为止，就是一个最简单的网络请求示例了，记得要先启动服务端的Tomcat才能测试成功，对应的服务端源码在这里（用IDEA打开即可）：[github.com/huannan/XAr…](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fhuannan%2FXArchServer)
+到这里为止，就是一个最简单的网络请求示例了，记得要先启动服务端的Tomcat才能测试成功，对应的服务端源码在这里（用IDEA打开即可）：https://github.com/huannan/XArchServer
 
 服务端就是最简单的Java Web项目，封装了最基础的Servlet，以及引入了FastJson，代码都比较简单就不详细解释了，有兴趣的可以看一下。项目架构如下：
 
-![服务端项目架构](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dd2f68a17cf74b6c8962b836a8c8e773~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?)
+[![服务端项目架构](https://camo.githubusercontent.com/e10829e21f8617f6b6391acc406950218a649b20d49a36c2cf2281ea792ebe77/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d366365616630353736323762396235372e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)](https://camo.githubusercontent.com/e10829e21f8617f6b6391acc406950218a649b20d49a36c2cf2281ea792ebe77/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323537303033302d366365616630353736323762396235372e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 下面开始讲解网络框架里面最重要的基类BaseNetworkApi：
 
-```kotlin
+```
 abstract class BaseNetworkApi<I>(private val baseUrl: String) : IService<I> {
 
     protected val service: I by lazy {
@@ -1040,7 +1020,6 @@ abstract class BaseNetworkApi<I>(private val baseUrl: String) : IService<I> {
         }
     }
 }
-复制代码
 ```
 
 首先，我们利用了泛型擦除的特性，在创建一个带泛型参数的Interface也就是IService，那么在BaseNetworkApi里面就可以通过getServiceClass函数来获取子类传进来的泛型参数。
@@ -1055,7 +1034,7 @@ abstract class BaseNetworkApi<I>(private val baseUrl: String) : IService<I> {
 
 这一块主要是Room的使用和MMKV的简单封装，示例代码如下：
 
-```kotlin
+```
 @Database(entities = [User::class], version = 1)
 abstract class XDatabase : RoomDatabase() {
 
@@ -1083,7 +1062,6 @@ interface UserDao {
 
     ...
 }
-复制代码
 /**
  * 本类为MMKV的封装类，防止代码入侵
  */
@@ -1119,7 +1097,6 @@ object XKeyValue {
 
     ...
 }
-复制代码
 ```
 
 需要提一下的是Room的API已经支持返回挂起函数了。
@@ -1130,8 +1107,8 @@ object XKeyValue {
 
 文章主要带大家实现了Gradle配置统一管理、基类封装、视图绑定、底部导航栏的实现、事件总线框架封装、列表架构封装、网络架构搭建、持久化，讲的都是笔者在搭建整个架构的核心思路，里面其实还有大量逻辑和细节，可以直接查阅源码：
 
-- 客户端源码： [github.com/huannan/XAr…](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fhuannan%2FXArch)
-- 服务端源码： [github.com/huannan/XAr…](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fhuannan%2FXArchServer)
+- 客户端源码： https://github.com/huannan/XArch
+- 服务端源码： https://github.com/huannan/XArchServer
 
 一个完整的项目还有诸如下面等大量工作需要实现：
 
@@ -1141,9 +1118,3 @@ object XKeyValue {
 - 完善Repository层等等
 
 这些功能笔者会在后面持续更新，如果觉得这个架构还不错或者有任何问题，可以加笔者微信huannan88，大家一起来讨论。
-
-
-作者：小楠总
-链接：https://juejin.cn/post/7023377961503948808
-来源：稀土掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
