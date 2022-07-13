@@ -2,7 +2,7 @@
 
 1. Activity事件传递流程：
 
-   ![WechatIMG13](/Users/sword/Desktop/WechatIMG13.png)
+   !([MyImages/WechatIMG13.png at main · spxcc/MyImages (github.com)](https://github.com/spxcc/MyImages/blob/main/WechatIMG13.png))
 
 2. ViewGroup事件传递：
 
