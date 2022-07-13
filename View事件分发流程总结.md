@@ -6,4 +6,6 @@
 
 2. ViewGroup事件传递：
 
+   ![ViewGroup事件传递流程图](https://github.com/spxcc/MyImages/blob/main/WechatIMG15.png)
+
 3. View事件传递：
